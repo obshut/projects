@@ -1,22 +1,13 @@
-import React, {useState} from "react";
+import React from "react";
 import "./team.css";
 import "./team_media.css";
-import Trener from "../trener/trener";
 import {NavLink} from "react-router-dom";
 
 const Team = () => {
 
-    const [showComponent, setShowComponent] = useState('');
     const json = (event) => {
-        console.log(event.currentTarget.id);
         localStorage.setItem('id', event.currentTarget.id);
-        console.log(localStorage);
-        setShowComponent('Trener');
     };
-
-    if (showComponent === 'Trener') {
-        return <Trener/>;
-    }
 
 
     return (
@@ -142,7 +133,6 @@ const Team = () => {
                         </div>
                     </NavLink>
                 </button>
-
             </div>
         </div>
 

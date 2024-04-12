@@ -28,6 +28,7 @@ const Reviews = () => {
     const [feedbacks, setFeedbacks] = useState([]);
     const [name, setName] = useState('');
     const [feedback, setFeedback] = useState('');
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     useEffect(() => {
         fetch('https://fitnes-be743-default-rtdb.europe-west1.firebasedatabase.app/feedbacks.json')
@@ -42,7 +43,7 @@ const Reviews = () => {
     }, []);
 
 
-    const handleSubmit = async (e) => {
+    const Submit = async (e) => {
         e.preventDefault();
         const newFeedback = {
             name,
@@ -60,8 +61,6 @@ const Reviews = () => {
         setFeedback('');
     };
 
-
-    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -86,7 +85,7 @@ const Reviews = () => {
                     }} onClick={closeModal}>
                     X
                 </button>
-                <form className={"feedback__form"} onSubmit={handleSubmit}>
+                <form className={"feedback__form"} onSubmit={Submit}>
                     <input
                         required
                         className={"feedback__input"}

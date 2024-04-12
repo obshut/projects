@@ -8,27 +8,28 @@ const Header = () => {
 
     const [nameError, setNameError] = useState('');
     const [telError, setTelError] = useState('');
+    const [modalIsOpen2, setModalIsOpen2] = useState(false);
 
-    const handleNameChange = (e) => {
+    const NameChange = (e) => {
         const pattern = /^[а-яА-Я\s]+$/;
         if (!pattern.test(e.target.value)) {
             setNameError('Пожалуйста, используйте только кириллицу.');
         } else {
+            e = setName(e.target.value)
             setNameError('');
         }
     };
 
-    const handleTelChange = (e) => {
+    const TelChange = (e) => {
         const pattern = /^[+0-9]+$/;
         if (!pattern.test(e.target.value)) {
             setTelError('Пожалуйста, используйте только цифры.');
         } else {
+            e = setTel(e.target.value)
             setTelError('');
         }
     };
 
-
-    const [modalIsOpen2, setModalIsOpen2] = useState(false);
 
     const openModal2 = () => {
         setModalIsOpen2(true);
@@ -38,20 +39,39 @@ const Header = () => {
         setModalIsOpen2(false);
     };
 
-    const handleSubmit = () => {
-        alert(`Спасибо за оставленную заявку. С вами свяжется наш сотрудник в ближайшее время.`);
+    const [name, setName] = useState('');
+    const [tel, setTel] = useState('');
+
+    const Submit2 = async (e) => {
+        e.preventDefault();
+        const newApplication = {
+            name,
+            tel,
+        }
+
+        await fetch('https://fitnes-be743-default-rtdb.europe-west1.firebasedatabase.app/application.json', {
+            method: 'POST',
+            body: JSON.stringify(newApplication),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                alert(`Спасибо за оставленную заявку. С вами свяжется наш сотрудник в ближайшее время.`);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        setName('');
+        setTel('');
     };
 
 
     const modalContent2 = (
         <div className={"feedback__div"}>
             <div style={{
-                // background: "rgba(255,255,255,5)",
                 display: "flex",
                 borderRadius: 12,
                 width: 430,
                 backgroundColor: "rgba(255,255,255,0.4)",
-                // backgroundColor: "#0f3f3f",
                 height: 330
             }}>
                 <button
@@ -69,13 +89,14 @@ const Header = () => {
                 <div style={{
                     width: '100%'
                 }}>
-                    <form className={"feedback__form"} onSubmit={handleSubmit}>
+                    <form className={"feedback__form2"} onSubmit={Submit2}>
                         <input
                             className={"feedback__input"}
                             type={"text"}
+                            value={name}
                             placeholder={"Напишите ваше ФИО"}
                             required
-                            onChange={handleNameChange}
+                            onChange={NameChange}
                         />
                         {nameError && <p style={{
                             color: 'black',
@@ -84,11 +105,12 @@ const Header = () => {
                         <input
                             className={"feedback__input input"}
                             type={"tel"}
+                            value={tel}
                             placeholder={"+375 "}
                             pattern={"^[+0-9]+$"}
                             minLength={12}
                             required
-                            onChange={handleTelChange}
+                            onChange={TelChange}
                         />
                         {telError && <p style={{
                             color: 'black',

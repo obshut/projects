@@ -9,6 +9,8 @@ import {getDownloadURL, getStorage, ref} from 'firebase/storage';
 
 const Trener = () => {
 
+    const storage = getStorage();
+
     const {pathname} = useLocation();
 
     useEffect(() => {
@@ -41,9 +43,7 @@ const Trener = () => {
         console.log(postImg)
         getDownloadURL(ref(storage, postImg))
             .then((url) => {
-                // `url` is the download URL for 'images/stars.jpg'
 
-                // This can be downloaded directly:
                 const xhr = new XMLHttpRequest();
                 xhr.responseType = 'blob';
                 xhr.onload = (event) => {
@@ -52,16 +52,12 @@ const Trener = () => {
                 xhr.open('GET', url);
                 xhr.send();
 
-                // Or inserted into an <img> element
                 const img = document.getElementById('trainer');
                 img.setAttribute('src', url);
             })
             .catch((error) => {
-                // Handle any errors
             });
     };
-
-    const storage = getStorage();
 
 
     return (
